@@ -7,15 +7,27 @@ def init_vcs():
     os.makedirs(".vcs_storage", exist_ok=True)
     print("VCS started")
 
+def list_snapshots(directory, number_of_snapshots):
+    if not os.path.exists(directory):
+        print(f"Can't find directory {directory}")
+        return
+
+    snapshots = os.walk(directory)
+    count = 0
+
+    for root, dirs, files in snapshots:
+        for file in files:
+            print(file)
+            count += 1 
+
+            if count >= number_of_snapshots:
+                return 
+       
 def snapshot(directory, message="Empty Message"):
     snapshot_hash = hashlib.sha256()
     snapshot_data = {"files": {}}
 
     timestamp = datetime.datetime.now().isoformat()
-    snapshot_data["metadata"] = {
-        "timestamp": timestamp,
-        "message": message
-    }
     for root, dirs, files in os.walk(directory):
         for file in files:
             if ".vcs_storage" in os.path.join(root, file):
@@ -26,8 +38,6 @@ def snapshot(directory, message="Empty Message"):
             with open(file_path, "rb") as f:
                 content = f.read()
                 snapshot_hash.update(content)
-                snapshot_hash.update(timestamp.encode())
-                snapshot_hash.update(message.encode())
                 snapshot_data["files"][file_path] = content
 
 
@@ -80,6 +90,8 @@ if __name__ == "__main__":
         snapshot(".")
     elif command == "revert":
         revert_to_snapshot(sys.argv[2])
+    elif command == "list":
+        list_snapshots(".vcs_storage", int (sys.argv[2]))
     else:
         print("Unknown Command :( ")
 
