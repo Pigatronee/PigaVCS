@@ -20,12 +20,16 @@ def list_snapshots(directory, number_of_snapshots):
             print(file)
             count += 1 
 
-            if count >= number_of_snapshots:
+            if count >= number_of_snapshots or file == "":
                 return 
        
 def snapshot(directory, message="Empty Message"):
     snapshot_hash = hashlib.sha256()
-    snapshot_data = {"files": {}}
+    snapshot_data = {
+        "files": {},
+        "message": message,
+        "timestamp": datetime.datetime.now().isoformat() 
+    }
 
     timestamp = datetime.datetime.now().isoformat()
     for root, dirs, files in os.walk(directory):
