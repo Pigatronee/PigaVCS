@@ -85,7 +85,7 @@ if __name__ == "__main__":
     if command == "init":
         init_vcs()
     elif command in ("help", "--help"):
-        print("commands:\n init \n snapshot \n revert (HashCode)")
+        print("commands:\n init \n snapshot \n revert (HashCode) \n List (number of hashes to list )")
     elif command == "snapshot":
         snapshot(".")
     elif command == "revert":
