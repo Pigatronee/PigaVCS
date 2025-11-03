@@ -3,10 +3,14 @@ import hashlib
 import pickle
 import datetime
 
+# Make init 
 def init_vcs():
     os.makedirs(".vcs_storage", exist_ok=True)
     print("VCS started")
 
+# List snapshots
+# TODO: make this list timestamp and commit message
+# ---------
 def list_snapshots(directory, number_of_snapshots):
     if not os.path.exists(directory):
         print(f"Can't find directory {directory}")
@@ -22,7 +26,8 @@ def list_snapshots(directory, number_of_snapshots):
 
             if count >= number_of_snapshots or file == "":
                 return 
-       
+
+# Make a snapshot with Snapshot data (crazy shit)
 def snapshot(directory, message="Empty Message"):
     snapshot_hash = hashlib.sha256()
     snapshot_data = {
@@ -53,6 +58,9 @@ def snapshot(directory, message="Empty Message"):
 
     print(f"Snapshot created with hash {hash_digest}")
 
+# Revert back to old snapshots 
+# TODO: Add functionality to revert back to commit message
+# ----------
 def revert_to_snapshot(hash_digest):
     snapshot_path = f".vcs_storage/{hash_digest}"
     if not os.path.exists(snapshot_path):
@@ -81,7 +89,8 @@ def revert_to_snapshot(hash_digest):
         print(f"Removed {file_path}")
     print(f"Reverted to snapshot {hash_digest}")
 
-
+# TODO: Clean this up
+# -----------
 if __name__ == "__main__":
     import sys 
     command = sys.argv[1]
