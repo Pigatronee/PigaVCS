@@ -22,7 +22,7 @@ def list_snapshots(directory, number_of_snapshots):
     # Display Data
     for root, dirs, files in snapshots:
         for file in files:
-            with open(os.path.join(directory, file), "rb") as f:
+            with open(os.path.join(root, file), "rb") as f:
                 snapshot_data = pickle.load(f)
             message = snapshot_data.get("message", "no message")
             timestamp = snapshot_data.get("timestamp", "no timestamp")
