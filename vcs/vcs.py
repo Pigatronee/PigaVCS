@@ -22,10 +22,10 @@ def list_snapshots(directory, number_of_snapshots):
     # Display Data
     for root, dirs, files in snapshots:
         for file in files:
-            with open(f"{directory}/{file}", "rb") as f:
+            with open(os.path.join(directory, file), "rb") as f:
                 snapshot_data = pickle.load(f)
-                message = snapshot_data.get("message", "no message")
-                timestamp = snapshot_data.get("timestamp", "no timestamp")
+            message = snapshot_data.get("message", "no message")
+            timestamp = snapshot_data.get("timestamp", "no timestamp")
 
             print(f"{message} {timestamp} + {file}")
             count += 1 
@@ -54,6 +54,7 @@ def snapshot(directory, message="Empty Message"):
             with open(file_path, "rb") as f:
                 content = f.read()
                 snapshot_hash.update(content)
+                snapshot_hash.update(message.encode())
                 snapshot_data["files"][file_path] = content
 
 
@@ -63,7 +64,7 @@ def snapshot(directory, message="Empty Message"):
     with open(f".vcs_storage/{hash_digest}", "wb") as f:
         pickle.dump(snapshot_data, f)
 
-    print(f"Snapshot created with hash {hash_digest}")
+    print(f"Snapshot created with hash {hash_digest} and with commit message {message}")
 
 # Revert back to old snapshots 
 # TODO: Add functionality to revert back to commit message
@@ -107,7 +108,7 @@ if __name__ == "__main__":
     elif command in ("help", "--help"):
         print("commands:\n init \n snapshot \n revert (HashCode) \n List (number of hashes to list )")
     elif command == "snapshot":
-        snapshot(".")
+        snapshot(".", sys.argv[2])
     elif command == "revert":
         revert_to_snapshot(sys.argv[2])
     elif command == "list":
