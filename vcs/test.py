@@ -1,17 +1,25 @@
-import hashlib
-import datetime 
-import pickle
+import os
+from datetime import datetime
 
+directory = "your_directory_path"
 
-hash_digest = "5a54b9e2e245528a53fad52e3c8498750fae28b9c461356c086b45112b6d616b"
-snapshot_path = f".vcs_storage/{hash_digest}"
+directory = ".vcs_storage/"
 
-with open(snapshot_path, "rb") as f:
-    snapshot_data = pickle.load(f)
-    message = snapshot_data.get("message", "no message")
-    timestamp = snapshot_data.get("timestamp", "no timestamp")
+# Walk through the directory
+snapshots = os.walk(directory)
 
-    print("commit: ", hash_digest)
-    print("message: ", message)
-    print("timestamp: ", timestamp)
+for root, dirs, files in snapshots:
+    # Full paths to files
+    full_paths = [os.path.join(root, file) for file in files]
+    
+    # Sort files by modification time (most recent first)
+    full_paths.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    
+    # Alternatively, for creation time (on Windows)
+    # full_paths.sort(key=lambda x: os.path.getctime(x), reverse=True)
+    
+    # Display file info
+    for file_path in full_paths:
+        mod_time = os.path.getmtime(file_path)
+        print(f"{file_path} - Last modified: {datetime.fromtimestamp(mod_time)}")
 
