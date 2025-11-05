@@ -21,8 +21,13 @@ def list_snapshots(directory, number_of_snapshots):
     snapshots = os.walk(directory)
     # Display Data
     for root, dirs, files in snapshots:
-        for file in files:
-            with open(os.path.join(root, file), "rb") as f:
+        # Sort files by creation date
+        full_paths = [os.path.join(root, file) for file in files]
+        full_paths.sort(key=lambda x: os.path.getmtime(x), reverse=True)  # newest first
+    
+           
+        for file in full_paths:
+            with open(file, "rb") as f:
                 snapshot_data = pickle.load(f)
             message = snapshot_data.get("message", "no message")
             timestamp = snapshot_data.get("timestamp", "no timestamp")
