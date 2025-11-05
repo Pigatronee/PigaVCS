@@ -15,14 +15,21 @@ def list_snapshots(directory, number_of_snapshots):
     if not os.path.exists(directory):
         print(f"Can't find directory {directory}")
         return
-
-    snapshots = os.walk(directory)
     count = 0
 
+    # GET SNAPSHIT DATA
+    snapshots = os.walk(directory)
+    # Display Data
     for root, dirs, files in snapshots:
         for file in files:
-            print(file)
+            with open(f"{directory}/{file}", "rb") as f:
+                snapshot_data = pickle.load(f)
+                message = snapshot_data.get("message", "no message")
+                timestamp = snapshot_data.get("timestamp", "no timestamp")
+
+            print(f"{message} {timestamp} + {file}")
             count += 1 
+
 
             if count >= number_of_snapshots or file == "":
                 return 
