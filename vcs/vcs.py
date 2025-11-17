@@ -78,7 +78,8 @@ def snapshot(directory, message="Empty Message"):
 def revert_to_snapshot(hash_digest):
     # Determine if hash_digest is a hash or a commit message
     is_hash = True
-    snapshot_path = f".vcs_storage/{hash_digest}"
+    snapshot_dir = ".vcs_storage/"
+    snapshot_path = f"{snapshot_dir}{hash_digest}"
     if not os.path.exists(snapshot_path):
         print("Snapshot probably doesn't exist in " + snapshot_path)
         is_hash = False
@@ -86,8 +87,12 @@ def revert_to_snapshot(hash_digest):
     # Revert to the snapshot using hash or commit message
 
     if not is_hash:
-
-        print(f"Found commit message: {message}")
+        for root, dirs, files, in os.walk(snapshot_dir):
+            for file in files:
+                with open(os.path.join(snapshot_dir, file), "rb") as f:
+                    snapshot_data = pickle.load(f)
+                message = snapshot_data.get("message", "no message")
+                print("Found commit message "+ message)
     else:
         with open (snapshot_path, "rb") as f:
             snapshot_data = pickle.load(f)
