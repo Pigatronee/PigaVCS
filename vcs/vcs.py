@@ -107,7 +107,6 @@ def revert_to_snapshot(hash_digest):
                         revert_to_snapshot(matching_hash)
                     else:
                         print("Multiple matching commit messages found. Please use the hash instead.")
-                    print("Found commit message "+ message)
     else:
         with open (snapshot_path, "rb") as f:
             snapshot_data = pickle.load(f)
