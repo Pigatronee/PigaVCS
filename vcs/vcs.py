@@ -101,7 +101,7 @@ def revert_to_snapshot(hash_digest):
                 if hash_digest in message:
                     matching_hash = file
                     matches.append(matching_hash)
-                    if len matches == 0:
+                    if len(matches) == 0:
                         revert_to_snapshot(matching_hash)
                     else:
                         print("Multiple matching commit messages found. Please use the hash instead.")
