@@ -89,6 +89,9 @@ def revert_to_snapshot(hash_digest):
     # Revert to the snapshot using hash or commit message
     
     if not is_hash:
+        # stores how many matching commits there are
+        matches = []
+
         for root, dirs, files, in os.walk(snapshot_dir):
             for file in files:
                 with open(os.path.join(snapshot_dir, file), "rb") as f:
@@ -97,7 +100,11 @@ def revert_to_snapshot(hash_digest):
                 # Check if the message the user used is the same as an existing snapshot
                 if hash_digest in message:
                     matching_hash = file
-                    revert_to_snapshot(matching_hash)
+                    matches.append(matching_hash)
+                    if len matches == 0:
+                        revert_to_snapshot(matching_hash)
+                    else:
+                        print("Multiple matching commit messages found. Please use the hash instead.")
                     print("Found commit message "+ message)
 
         else:
