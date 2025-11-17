@@ -73,7 +73,6 @@ def snapshot(directory, message="Empty Message"):
     print(f"Snapshot created with hash {hash_digest} and with commit message {message}")
 
 # Revert back to old snapshots 
-# TODO: Add functionality to revert back to commit message
 # ----------
 def revert_to_snapshot(hash_digest):
     # Determine if hash_digest is a hash or a commit message
