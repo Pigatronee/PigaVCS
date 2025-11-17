@@ -101,14 +101,13 @@ def revert_to_snapshot(hash_digest):
                 if hash_digest in message:
                     matching_hash = file
                     matches.append(matching_hash)
-                    if len(matches) == 1:
+                    if len(matches) == 0:
+                        print(f"Couldn't find a commit message matching {hash_digest}. Messages are case sensitive.")
+                    elif len(matches) == 1:
                         revert_to_snapshot(matching_hash)
                     else:
                         print("Multiple matching commit messages found. Please use the hash instead.")
                     print("Found commit message "+ message)
-
-                else:
-                    print(f"Couldn't find a commit message matching {hash_digest}. Messages are case sensitive.")
     else:
         with open (snapshot_path, "rb") as f:
             snapshot_data = pickle.load(f)
