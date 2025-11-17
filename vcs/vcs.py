@@ -11,7 +11,7 @@ def init_vcs():
 # List snapshots
 # TODO: make this list timestamp and commit message
 # ---------
-def list_snapshots(directory, number_of_snapshots):
+def list_snapshots(directory, number_of_snapshots, Include_hash = False):
     if not os.path.exists(directory):
         print(f"Can't find directory {directory}")
         return
@@ -31,8 +31,11 @@ def list_snapshots(directory, number_of_snapshots):
                 snapshot_data = pickle.load(f)
             message = snapshot_data.get("message", "no message")
             timestamp = snapshot_data.get("timestamp", "no timestamp")
-
-            print(f"{message} {timestamp} + {file}")
+            
+            if Include_hash:
+                print(f"{message} {timestamp} {file}")
+            else:
+                print(f"{message} {timestamp}")
             count += 1 
 
 
@@ -117,7 +120,11 @@ if __name__ == "__main__":
     elif command == "revert":
         revert_to_snapshot(sys.argv[2])
     elif command == "list":
-        list_snapshots(".vcs_storage", int (sys.argv[2]))
+        if len(sys.argv) > 3:
+            arg3 = sys.argv[3]
+        else:
+            arg3 = False
+        list_snapshots(".vcs_storage", int (sys.argv[2]), arg3)
     else:
         print("Unknown Command :( ")
 
