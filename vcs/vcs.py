@@ -81,8 +81,10 @@ def revert_to_snapshot(hash_digest):
     snapshot_dir = ".vcs_storage/"
     snapshot_path = f"{snapshot_dir}{hash_digest}"
     if not os.path.exists(snapshot_path):
-        print("Snapshot probably doesn't exist in " + snapshot_path)
+        print("Reverting to a commit message.\n" + snapshot_path)
         is_hash = False
+    else:
+        print("Reverting to a hash.\n")
 
     # Revert to the snapshot using hash or commit message
 
@@ -93,8 +95,8 @@ def revert_to_snapshot(hash_digest):
                     snapshot_data = pickle.load(f)
                 message = snapshot_data.get("message", "no message")
                 # Check if the message the user used is the same as an existing snapshot
-                if hash_digest.lower in message.lower:
-                    print("Found commit message "+ message)
+        if hash_digest in message:
+            print("Found commit message "+ message)
     else:
         with open (snapshot_path, "rb") as f:
             snapshot_data = pickle.load(f)
@@ -111,13 +113,13 @@ def revert_to_snapshot(hash_digest):
             for file in files:
                 current_files.add(os.path.join(root, file))
 
-        snapshot_files = set(snapshot_data["file_list"])
-        files_to_delete = current_files - snapshot_files
+    snapshot_files = set(snapshot_data["file_list"])
+    files_to_delete = current_files - snapshot_files
 
-        for file_path in files_to_delete:
-            os.remove(file_path)
-            print(f"Removed {file_path}")
-        print(f"Reverted to snapshot {hash_digest}")
+    for file_path in files_to_delete:
+        os.remove(file_path)
+        print(f"Removed {file_path}")
+    print(f"Reverted to snapshot {hash_digest}")
 
 
 
