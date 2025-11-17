@@ -9,7 +9,6 @@ def init_vcs():
     print("VCS started")
 
 # List snapshots
-# TODO: make this list timestamp and commit message
 # ---------
 def list_snapshots(directory, number_of_snapshots, Include_hash = False):
     if not os.path.exists(directory):
@@ -68,7 +67,6 @@ def snapshot(directory, message="Empty Message"):
 
     hash_digest = snapshot_hash.hexdigest()
     snapshot_data["file_list"] = list(snapshot_data["files"].keys())
-
     with open(f".vcs_storage/{hash_digest}", "wb") as f:
         pickle.dump(snapshot_data, f)
 
@@ -78,32 +76,43 @@ def snapshot(directory, message="Empty Message"):
 # TODO: Add functionality to revert back to commit message
 # ----------
 def revert_to_snapshot(hash_digest):
+    # Determine if hash_digest is a hash or a commit message
+    is_hash = True
     snapshot_path = f".vcs_storage/{hash_digest}"
     if not os.path.exists(snapshot_path):
-        print("Snapshot probably doesn't exist")
-        return
-    with open (snapshot_path, "rb") as f:
-        snapshot_data = pickle.load(f)
+        print("Snapshot probably doesn't exist in " + snapshot_path)
+        is_hash = False
 
-    for file_path, content in snapshot_data["files"].items():
-        os.makedirs(os.path.dirname(file_path),exist_ok=True)
-        with open(file_path, "wb") as f:
-            f.write(content)
+    # Revert to the snapshot using hash or commit message
 
-    current_files = set()
-    for root, dirs, files in os.walk(".", topdown=True):
-        if ".vcs_storage" in root:
-            continue
-        for file in files:
-            current_files.add(os.path.join(root, file))
+    if not is_hash:
 
-    snapshot_files = set(snapshot_data["file_list"])
-    files_to_delete = current_files - snapshot_files
+        print(f"Found commit message: {message}")
+    else:
+        with open (snapshot_path, "rb") as f:
+            snapshot_data = pickle.load(f)
 
-    for file_path in files_to_delete:
-        os.remove(file_path)
-        print(f"Removed {file_path}")
-    print(f"Reverted to snapshot {hash_digest}")
+        for file_path, content in snapshot_data["files"].items():
+            os.makedirs(os.path.dirname(file_path),exist_ok=True)
+            with open(file_path, "wb") as f:
+                f.write(content)
+
+        current_files = set()
+        for root, dirs, files in os.walk(".", topdown=True):
+            if ".vcs_storage" in root:
+                continue
+            for file in files:
+                current_files.add(os.path.join(root, file))
+
+        snapshot_files = set(snapshot_data["file_list"])
+        files_to_delete = current_files - snapshot_files
+
+        for file_path in files_to_delete:
+            os.remove(file_path)
+            print(f"Removed {file_path}")
+        print(f"Reverted to snapshot {hash_digest}")
+
+
 
 # TODO: Clean this up
 # -----------
