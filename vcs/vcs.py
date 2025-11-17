@@ -92,7 +92,9 @@ def revert_to_snapshot(hash_digest):
                 with open(os.path.join(snapshot_dir, file), "rb") as f:
                     snapshot_data = pickle.load(f)
                 message = snapshot_data.get("message", "no message")
-                print("Found commit message "+ message)
+                # Check if the message the user used is the same as an existing snapshot
+                if hash_digest.lower in message.lower:
+                    print("Found commit message "+ message)
     else:
         with open (snapshot_path, "rb") as f:
             snapshot_data = pickle.load(f)
