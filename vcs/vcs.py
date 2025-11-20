@@ -132,7 +132,7 @@ def revert_to_snapshot(hash_digest):
 
 
 
-# TODO: Clean this up
+# TODO: Clean this up and use sysarg (Supposed to be better)
 # -----------
 if __name__ == "__main__":
     import sys 
