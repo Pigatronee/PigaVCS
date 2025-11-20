@@ -1,4 +1,5 @@
 import os
+import argparse
 import hashlib
 import pickle
 import datetime
@@ -132,13 +133,20 @@ def revert_to_snapshot(hash_digest):
 
 
 
-# TODO: Clean this up and use sysarg (Supposed to be better)
+# TODO: Clean this up and use argparse (Supposed to be better)
 # -----------
 if __name__ == "__main__":
-    import sys 
-    command = sys.argv[1]
+    import sys
+    # Make cli options
+    parser= argparse.ArgumentParser(description="Piga Vcs CLI")
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    if command == "init":
+    init_parser = subparsers.add_parser("init", help="Initialize the directory by adding .vc_storage directory")
+    
+    args = parser.parse_args()
+    #command = sys.argv[1]
+
+    if args.command == "init":
         init_vcs()
     elif command in ("help", "--help"):
         print("commands:\n init \n snapshot \n revert (HashCode) \n List (number of hashes to list )")
