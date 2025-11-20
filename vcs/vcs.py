@@ -141,17 +141,21 @@ if __name__ == "__main__":
     parser= argparse.ArgumentParser(description="Piga Vcs CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    init_parser = subparsers.add_parser("init", help="Initialize the directory by adding .vc_storage directory")
-    
+    init_parser = subparsers.add_parser("init", help="Initialize the directory by adding .vc_storage directory") 
+    snapshot_parser = subparsers.add_parser("snapshot", help="Create a snapshot of the current repository")
+    snapshot_parser.add_argument(
+        "message",
+        type=str,
+        help="Commit message for current snapshot"
+    )
+
     args = parser.parse_args()
     #command = sys.argv[1]
 
     if args.command == "init":
         init_vcs()
-    elif command in ("help", "--help"):
-        print("commands:\n init \n snapshot \n revert (HashCode) \n List (number of hashes to list )")
-    elif command == "snapshot":
-        snapshot(".", sys.argv[2])
+    elif args.command == "snapshot":
+        snapshot(".", args.message)
     elif command == "revert":
         revert_to_snapshot(sys.argv[2])
     elif command == "list":
