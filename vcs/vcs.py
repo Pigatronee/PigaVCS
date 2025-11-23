@@ -154,8 +154,15 @@ if __name__ == "__main__":
 
     # revert parser
     revert_parser = subparsers.add_parser("revert", help="Revert to a snapshot using either the -hash- or the Exact commit message (case sensitive)")
+    revert_parser.add_argument(
+        "message",
+        type=str,
+        help="Commit message for snapshot you wish to revert to. Use \"list\" to list snapshots"
+    )
+
 
     args = parser.parse_args()
+    
     #command = sys.argv[1]
 
     if args.command == "init":
@@ -163,7 +170,7 @@ if __name__ == "__main__":
     elif args.command == "snapshot":
         snapshot(".", args.message)
     elif args.command == "revert":
-        revert_to_snapshot(sys.argv[2])
+        revert_to_snapshot(args.message)
     elif command == "list":
         if len(sys.argv) > 3:
             arg3 = sys.argv[3]
