@@ -140,14 +140,20 @@ if __name__ == "__main__":
     # Make cli options
     parser= argparse.ArgumentParser(description="Piga Vcs CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
-
+    
+    # init parser
     init_parser = subparsers.add_parser("init", help="Initialize the directory by adding .vc_storage directory") 
+
+    # snapshot parser
     snapshot_parser = subparsers.add_parser("snapshot", help="Create a snapshot of the current repository")
     snapshot_parser.add_argument(
         "message",
         type=str,
         help="Commit message for current snapshot"
     )
+
+    # revert parser
+    revert_parser = subparsers.add_parser("revert", help="Revert to a snapshot using either the -hash- or the Exact commit message (case sensitive)")
 
     args = parser.parse_args()
     #command = sys.argv[1]
@@ -156,7 +162,7 @@ if __name__ == "__main__":
         init_vcs()
     elif args.command == "snapshot":
         snapshot(".", args.message)
-    elif command == "revert":
+    elif args.command == "revert":
         revert_to_snapshot(sys.argv[2])
     elif command == "list":
         if len(sys.argv) > 3:
