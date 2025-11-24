@@ -159,6 +159,20 @@ if __name__ == "__main__":
         type=str,
         help="Commit message for snapshot you wish to revert to. Use \"list\" to list snapshots"
     )
+    # list parser
+    list_parser = subparsers.add_parser("list", help="List a select number of past snapshots")
+    list_parser.add_argument(
+        "number",
+        type=int,
+        help="Number of snapshots to list"
+    )
+    list_parser.add_argument(
+        "--show-hash",
+        action="store_true",
+        help="Show hashes relative to commit messages in the list.",
+        required=False
+    )
+
 
 
     args = parser.parse_args()
@@ -171,12 +185,8 @@ if __name__ == "__main__":
         snapshot(".", args.message)
     elif args.command == "revert":
         revert_to_snapshot(args.message)
-    elif command == "list":
-        if len(sys.argv) > 3:
-            arg3 = sys.argv[3]
-        else:
-            arg3 = False
-        list_snapshots(".vcs_storage", int (sys.argv[2]), arg3)
+    elif args.command == "list":
+        list_snapshots(".vcs_storage", args.number, args.show_hash)
     else:
         print("Unknown Command :( ")
 
