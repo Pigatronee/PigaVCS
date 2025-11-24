@@ -132,9 +132,6 @@ def revert_to_snapshot(hash_digest):
         print(f"Reverted to snapshot {hash_digest}")
 
 
-
-# TODO: Clean this up and use argparse (Supposed to be better)
-# -----------
 if __name__ == "__main__":
     import sys
     # Make cli options
@@ -177,8 +174,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    #command = sys.argv[1]
-
     if args.command == "init":
         init_vcs()
     elif args.command == "snapshot":
