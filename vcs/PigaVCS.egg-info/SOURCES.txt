@@ -1,0 +1,7 @@
+setup.py
+PigaVCS.egg-info/PKG-INFO
+PigaVCS.egg-info/SOURCES.txt
+PigaVCS.egg-info/dependency_links.txt
+PigaVCS.egg-info/entry_points.txt
+PigaVCS.egg-info/requires.txt
+PigaVCS.egg-info/top_level.txt
