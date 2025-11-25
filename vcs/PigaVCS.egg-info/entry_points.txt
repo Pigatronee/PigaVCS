@@ -1,2 +1,2 @@
 [console_scripts]
-pigavcs = app:cli
+pigavcs = main:cli
