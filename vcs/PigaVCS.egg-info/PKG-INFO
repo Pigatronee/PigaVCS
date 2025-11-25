@@ -2,4 +2,5 @@ Metadata-Version: 2.4
 Name: PigaVCS
 Version: 0.2
 Requires-Dist: argparse
+Requires-Dist: datetime
 Dynamic: requires-dist
