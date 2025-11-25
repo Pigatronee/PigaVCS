@@ -132,7 +132,8 @@ def revert_to_snapshot(hash_digest):
         print(f"Reverted to snapshot {hash_digest}")
 
 
-if __name__ == "__main__":
+def cli():
+    
     import sys
     # Make cli options
     parser= argparse.ArgumentParser(description="Piga Vcs CLI")
@@ -185,3 +186,5 @@ if __name__ == "__main__":
     else:
         print("Unknown Command :( ")
 
+if __name__ == "__main__":
+    cli() 
