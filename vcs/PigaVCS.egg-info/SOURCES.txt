@@ -1,4 +1,5 @@
 setup.py
+vcs.py
 PigaVCS.egg-info/PKG-INFO
 PigaVCS.egg-info/SOURCES.txt
 PigaVCS.egg-info/dependency_links.txt

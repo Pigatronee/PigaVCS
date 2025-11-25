@@ -1,2 +1,2 @@
 [console_scripts]
-pigavcs = main:cli
+pigavcs = vcs:cli
